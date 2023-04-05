@@ -88,6 +88,6 @@ function handleSpotlight(e){
                 map,
             });
             map.setCenter(spotlightLatLng);
-            map.setZoom = 10;
+            map.setZoom(10);
     })
 }
