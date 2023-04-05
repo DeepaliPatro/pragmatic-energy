@@ -7,9 +7,8 @@ const icons = {
     Generic: "/images/generic.jpg",
 }
 
-
-async function initMap() {
     let map;
+async function initMap() {
     const centerLat = document.getElementById('center-lat')
     const centerLng = document.getElementById('center-lng')
     //@ts-ignore
@@ -48,10 +47,7 @@ async function initMap() {
         centerLng.innerHTML = 'lng: ' + longitude
     });
 
-    const infoWindow = new google.maps.InfoWindow({
-        // content: contentString,
-        // ariaLabel: station.name,
-    });
+    const infoWindow = new google.maps.InfoWindow();
 
     const geocoder = new google.maps.Geocoder();
 
@@ -172,13 +168,13 @@ function renderStation(station) {
     }
 
     return `
-                    <li>
-                        <img src='${icons[station.owner] || icons.Generic}' alt="">
-                        <div>
-                            <div><p>${station.name} <b>${station.distance}m</b></p></div>
-                            <p>${station.address}</p>
-                        </div>
-                    </li> 
+            <li>
+                <img src='${icons[station.owner] || icons.Generic}' alt="">
+                <div>
+                    <div><p>${station.name} <b>${station.distance}m</b></p></div>
+                    <p>${station.address}</p>
+                </div>
+            </li> 
     `
 }
 //==============================================================================

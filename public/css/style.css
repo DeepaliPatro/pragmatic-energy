@@ -98,14 +98,20 @@ tr:nth-child(even){
     border-bottom: 2px solid black;
 }
 .map-center-location{
-    height: 10em;
+    height: fit-content;
     border-bottom: 2px solid black;
+    font-size: small;
+}
+.map-center-location div{
+    display: flex;
+    justify-content: space-around;
 }
 .map-center-location h2, p, h3{
     padding: 5px;
 }
 .nearest-section{
     border-bottom: 2px solid black;
+    font-size: small;
 }
 .nearest-section h2{
     /* border-bottom: 1px solid black; */

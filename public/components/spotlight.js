@@ -1,59 +1,84 @@
 // import {initMap} from "../client.js"
+const icons = {
+    Ampol: "/images/ampol.jpeg",
+    BP: "/images/bp.png",
+    Caltex: "/images/caltex.png",
+    Shell: "/images/shell.png",
+    '7-Eleven Pty Ltd': "/images/seven-eleven.png",
+    Generic: "/images/generic.jpg",
+}
 
-const parentTag = document.querySelector('.spotlight-section main');
-const refresh = document.querySelector('.refresh')
-const spotlightStation = document.querySelector('.spotlight-station')
+const spotlightMain = document.querySelector('.spotlight-section main');
+const spotlightHeader = document.querySelector('.spotlight-section header')
 
 axios.get('/api/stations/random')
     .then(res => {
-
         const spotlight = res.data
-        parentTag.innerHTML = renderStation(spotlight)
-
+        spotlightMain.innerHTML = renderStation(spotlight)
     });
 
 function renderStation(station) {
-
-    const icons = {
-        Ampol: "/images/ampol.jpeg",
-        BP: "/images/bp.png",
-        Caltex: "/images/caltex.png",
-        Shell: "/images/shell.png",
-        '7-Eleven Pty Ltd': "/images/seven-eleven.png",
-        Generic: "/images/generic.jpg",
-    }
-
     return `
             <div>
-                <p class="spotlight-station" id="${station.name}"><a href="">${station.name}</a></p>
+                <p><a href="" class="spotlight-station" data-title="${station.name}">${station.name}</a></p>
                 <p>${station.address}</p>
             </div>
             <img src='${icons[station.owner] || icons.Generic}' alt="">
         `
 }
 
-refresh.addEventListener('click', handleRefresh)
+spotlightHeader.addEventListener('click', handleRefresh)
 
 function handleRefresh(event) {
     event.preventDefault()
     if(!event.target.classList.contains('refresh')) return
-    console.log(event.target.classList);
     axios.get('/api/stations/random')
         .then(res => {
+            const spotlight = res.data
+            spotlightMain.innerHTML = renderStation(spotlight)
+        })
+    ;
+}
 
-            const allStations = res.data
-            const randomStationNumber = _.random(0, allStations.length - 1)
-            const randomStationObj = res.data[randomStationNumber]
+spotlightMain.addEventListener('click', handleSpotlight)
 
-            parentTag.innerHTML = renderStation(randomStationObj)
+function handleSpotlight(e) {
+    e.preventDefault()
+    if(!e.target.classList.contains('spotlight-station')) return
+    let spotlightName = e.target.dataset.title
+    axios.get(`/api/stations/${spotlightName}`)
+    .then(res => {
+        const spotlight = res.data
+        const infoWindow = new google.maps.InfoWindow();
+        const spotlightLatLng = { lat: spotlight.latitude, lng: spotlight.longitude };
+
+        const image = {
+            url: icons[spotlight.owner] || icons.Generic,
+            scaledSize: new google.maps.Size(25, 25),
+            origin: new google.maps.Point(0, 0), // origin
+            anchor: new google.maps.Point(0, 0) // anchor
+        };
+
+        const marker = new google.maps.Marker({
+            position: spotlightLatLng,
+            map,
+            title: spotlight.name,
+            // label: spotlight.name,
+            icon: image
         });
 }
 
 spotlightStation.addEventListener('click', handleSpotlight)
 
-function handleSpotlight(event) {
-    event.preventDefault();
-    console.log(event.target);
-    // google.maps.event.trigger(markers[title], 'click');
-}
+        const contentString = `<div><h3>${spotlight.name}</h3> <p>${spotlight.address}</p></div>`
 
+        infoWindow.setContent(contentString)
+        infoWindow.open({
+            anchor: marker,
+            map,
+        });
+        map.setCenter(spotlightLatLng);
+        map.setZoom(13)
+    })
+;
+}

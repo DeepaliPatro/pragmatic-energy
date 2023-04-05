@@ -3,7 +3,7 @@ const router = Router();
 const db = require("../db");
 var _ = require('underscore');
 
-router.get("/all", (req, res) => {
+router.get("/", (req, res) => {
 
     const sql = "SELECT * FROM petrol_stations LIMIT 400;";
 
@@ -18,7 +18,6 @@ router.get("/random", (req, res) => {
     db.query(sql)
         .then(dbRes => res.json(dbRes.rows[_.random(0, dbRes.rows.length - 1)]))
 })
-
 
 router.get('/bounds', (req, res) => {
     const [lowerLat, upperLat, lowerLng, upperLng] = [req.query.lowerlat, req.query.upperlat, req.query.lowerlng, req.query.upperlng]
@@ -46,6 +45,15 @@ router.get('/nearest', (req, res) => {
         })
     ;
 
+})
+
+router.get("/:name", (req, res) => {
+
+    const sql = "SELECT * FROM petrol_stations WHERE name = $1;";
+
+    db.query(sql, [req.params.name])
+        .then(dbRes => res.json(dbRes.rows[0]))
+        ;
 })
 
 
