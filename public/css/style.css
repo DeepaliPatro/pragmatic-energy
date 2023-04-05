@@ -124,6 +124,12 @@ tr:nth-child(even){
     padding: 5px;
     height: 3em;
 }
+.hotkey-sidebar {
+    display: none;
+}
+.hotkey-body {
+    display: block;
+}
 .random-quote{
     flex: 1 0 auto;
     position: relative;

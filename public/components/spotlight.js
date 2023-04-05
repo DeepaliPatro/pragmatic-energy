@@ -1,9 +1,18 @@
 // import {initMap} from "../client.js"
-
+const icons = {
+    Ampol: "/images/ampol.jpeg",
+    BP: "/images/bp.png",
+    Caltex: "/images/caltex.png",
+    Shell: "/images/shell.png",
+    '7-Eleven Pty Ltd': "/images/seven-eleven.png",
+    Generic: "/images/generic.jpg",
+}
 const parentTag = document.querySelector('.spotlight-section main');
+
 const spotlightHeader = document.querySelector('.spotlight-section header');
 // const refresh = document.querySelector('.refresh')
 // const spotlightStation = document.querySelector('.spotlight-station')
+
 axios.get('/api/stations/random')
     .then(res => {
         const spotlight = res.data
@@ -11,15 +20,6 @@ axios.get('/api/stations/random')
     });
 
 function renderStation(station) {
-
-    const icons = {
-        Ampol: "/images/ampol.jpeg",
-        BP: "/images/bp.png",
-        Caltex: "/images/caltex.png",
-        Shell: "/images/shell.png",
-        '7-Eleven Pty Ltd': "/images/seven-eleven.png",
-        Generic: "/images/generic.jpg",
-    }
 
     return `
             <div>
@@ -45,15 +45,6 @@ function handleRefresh(event) {
 }
 
 parentTag.addEventListener('click', handleSpotlight)
-
-const icons = {
-    Ampol: "/images/ampol.jpeg",
-    BP: "/images/bp.png",
-    Caltex: "/images/caltex.png",
-    Shell: "/images/shell.png",
-    '7-Eleven Pty Ltd': "/images/seven-eleven.png",
-    Generic: "/images/generic.jpg",
-}
 
 function handleSpotlight(e){
     e.preventDefault();
