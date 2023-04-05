@@ -1,5 +1,13 @@
 const parentList = document.querySelector('.nearest-section ul');
 
+axios.get('/api/stations')
+    .then(res => {
+        const stations = res.data.slice(0, 10);
+        renderStationList(stations);
+    })
+    ;
+
+
 function renderStationList(stations) {
     parentList.innerHTML = stations
         .map(station => renderStation(station))

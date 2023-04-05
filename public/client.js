@@ -7,9 +7,12 @@ const icons = {
     Generic: "/images/generic.jpg",
 }
 
+let map;
+
+// const spotlightMain = document.querySelector('.spotlight-section main');
 
 async function initMap() {
-    let map;
+
     const centerLat = document.getElementById('center-lat')
     const centerLng = document.getElementById('center-lng')
     //@ts-ignore
@@ -122,28 +125,9 @@ async function initMap() {
         const radius = Math.min(latRadius, lngRadius)
 
         // Send a GET request, providing this query string
-        const proximityQueryString = `?lat=${centerLatCoordinate}&lng=${centerLngCoordinate}&radius=${radius}`;
-        axios.get(`/api/stations/nearest${proximityQueryString}`)
-        .then( res => renderStationList(res.data));
-
-
-
-        // Reverse geocode and display address
-        const h3Address = document.querySelector('.map-center-location h3');
-        const latlng = {
-            lat: centerLatCoordinate,
-            lng: centerLngCoordinate
-        }
+        const proximityQueryString = `?lat=${centerLat}&lng=${centerLng}&radius=${radius}`;
+        axios.get(`/api/stations/nearest${proximityQueryString}`);
         
-        geocoder
-            .geocode({ location: latlng })
-            .then((response) => {
-                if (response.results[0]) {
-                    // In here, we want to...
-                    h3Address.textContent = response.results[0].formatted_address.split(',', 2);
-                }
-            })
-
     })
 }
 
@@ -184,4 +168,8 @@ function renderStation(station) {
 //==============================================================================
 
 initMap();
+
+
+
+
 
